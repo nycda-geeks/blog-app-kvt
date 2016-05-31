@@ -1,0 +1,29 @@
+{
+  "name": "blog-app-kvt",
+  "version": "1.0.1",
+  "description": "Demo-app my first fully functional website",
+  "main": "index.ejs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nycda-geeks/blog-app-kvt.git"
+  },
+  "keywords": [
+    "Blog",
+    "NYCDA"
+  ],
+  "author": "Kyle van TIl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nycda-geeks/blog-app-kvt/issues"
+  },
+  "homepage": "https://github.com/nycda-geeks/blog-app-kvt#readme",
+  "dependencies": {
+    "ejs": "^2.4.2",
+    "express": "^4.13.4",
+    "pg": "^4.5.5",
+    "sequelize": "^3.23.3"
+  }
+}
