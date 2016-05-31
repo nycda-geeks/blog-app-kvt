@@ -1,10 +1,21 @@
-<h1> Welcome </h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <h1> Welcome </h1>
+    <meta charset="utf-8">
+    <title>Home/Login Page</title>
+  </head>
+  <body>
+
+    <form action="/login" method="post">
+      <label>Email:</label><br>
+      <input type="text" name="email" required="email"><br>
+      <label>Password:</label><br>
+      <input type="text" name="password" required="password"><br>
+      <input type="submit" value="login" id="submit">
 
 
-<form>
-  Email:<br>
-  <input type="text" name="firstname"><br>
-  Password:<br>
-  <input type="text" name="lastname"><br>
-  <button> Sign in </button>
-</form>
+      <h3><a href="/newUser">Create new user</a> </h3>
+    </form>
+  </body>
+</html>

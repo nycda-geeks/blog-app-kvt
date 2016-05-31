@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/nycda-geeks/blog-app-kvt#readme",
   "dependencies": {
+    "body-parser": "^1.15.1",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "pg": "^4.5.5",
     "sequelize": "^3.23.3"
   }
