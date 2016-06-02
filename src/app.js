@@ -95,7 +95,7 @@ app.post('/register', function( req, res ){
     email: req.body.userEmail,
     password: req.body.userPassword
   }).then(function(){
-    res.render('profile');
+    res.redirect('/profile');
 });
 });
 // display profile with all messages posted by user
@@ -117,7 +117,7 @@ app.get('/profile', function(req, res){
   })
 }
 });
-//
+//Post message
 app.post('/profile', function ( req, res) {
     console.log(req.session.user);
   User.findOne({
@@ -145,6 +145,16 @@ app.get('/allPosts', (req, res)=>{
   )
   })
 })
+
+app.get('/logout', (req, res)=> {
+  console.log('User is logged out')
+  req.session.destroy(function(error){
+    if(error){
+      throw error;
+    }
+    res.redirect('/?/message=' + encodeURIComponent("Succesfully logged out!"));
+  });
+});
 
 sequelize.sync({force: false}).then(function () {
 	var server = app.listen(3000, function () {
