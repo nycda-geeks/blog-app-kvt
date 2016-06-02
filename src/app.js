@@ -9,42 +9,42 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 //connect to database blog_app
-var sequelize = new Sequelize ('blog_app', 'postgres', 'kyle1993' ,{
+var sequelize = new Sequelize ('blogdata', 'postgres', 'kyle1993' ,{
   host: 'localhost',
   dialect: 'postgres',
 });
 
 app.use (session({
     secret: 'secret secret',
-    resave: false,
+    resave: true,
     saveUninitialized: false
 }));
 
 //Creating a new table called users
-var User = sequelize.define('users', {
+var User = sequelize.define('user', {
   userName: Sequelize.STRING,
   email: Sequelize.STRING,
   password: Sequelize.STRING
 });
 
 //Creating a new table called messages
-var userPost = sequelize.define('messages', {
-  title: Sequelize.STRING,
-  message: Sequelize.STRING
+var Message = sequelize.define('message', {
+  title: Sequelize.TEXT,
+  message: Sequelize.TEXT
 });
 
 //Creating a new table called comments
-var userComment = sequelize.define('comments', {
+var userComment = sequelize.define('comment', {
   body: Sequelize.STRING,
 });
 
 // Made sure User can have multiple messages but a message posted can have only one user
-User.hasMany(userPost);
-userPost.belongsTo(User);
-userPost.hasMany(userComment);
+User.hasMany(Message);
+Message.belongsTo(User);
+Message.hasMany(userComment);
 User.hasMany(userComment);
 userComment.belongsTo(User);
-userComment.belongsTo(userPost);
+userComment.belongsTo(Message);
 
 
 
@@ -79,7 +79,7 @@ app.get('/newUser', function ( req, res ){
 	res.render('newUser');
 });
 
-app.post('/profile', function( req, res ){
+app.post('/register', function( req, res ){
   User.create({
     userName: req.body.userName,
     email: req.body.userEmail,
@@ -90,11 +90,35 @@ app.post('/profile', function( req, res ){
 });
 
 app.get("/profile", function( req, res){
-
+  User.findOne({
+    where: {
+          id: req.session.user.id
+    }
+  })
   console.log('Profile page is displayed on localhost');
   res.render('profile');
 });
 
+app.post('/profile', function ( req, res) {
+    console.log(req.session.user);
+  User.findOne({
+    where: {
+      id: req.session.user.id
+    }
+  }).then(function(theuser){
+     theuser.createMessage({
+       title: req.body.title,
+       message: req.body.message
+     })
+    //  Message.create({
+    //    title: req.body.Title,
+    //    message: req.body.Message
+    //  })
+  }).then(function () {
+    res.redirect('/profile')
+  })
+
+})
 
 
 sequelize.sync({force: false}).then(function () {
