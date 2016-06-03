@@ -1,12 +1,19 @@
 each message in posts
-  h2= message.title
-  p= message.message
 
-    form(action='/profile', method='post')
-      label Comment
-      input(type='text', name='comment', value='')
-      br
-      input(type='submit', value='POST COMMENT', name='submit')
+	h2= message.title
+	p= message.body
+
+		form(action='/addComment', method='post')
+	      
+			input(name='comment')
+			br
+			input(type='text', name='messageId' value=message.id)
+			button(type='comment', value= 'comment') Comment
+		each thing in message.comment
+			p= thing.body
+
+     
+
 
 a(href="/") login
 br

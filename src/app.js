@@ -6,6 +6,7 @@ var session = require ('express-session');
 var pg = require ( 'pg' );
 var app = express();
 var fs = require ('fs');
+var Promise = require ( 'promise' )
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -136,15 +137,55 @@ app.post('/profile', function ( req, res) {
 })
 
 app.get('/allPosts', (req, res)=>{
-  Message.findAll({
+   
+  Message.findAll({ include:[ User, {model: userComment, include: [User]}]
 
   }).then(function(messages){
-    res.render('allPosts',{
-      posts: messages
-    }
-  )
+    var allMessages = messages.map(function(messages){
+      return{
+          id: messages.dataValues.id,
+          title: messages.dataValues.title,
+          body: messages.dataValues.message,
+          user: messages.dataValues.user,
+          comment: messages.dataValues.comments
+      }
+    })
+    res.render('allPosts', {
+      posts: allMessages,
+      user: req.session.user,
+      
+    })
+     
+    
+  
   })
 })
+
+app.post('/addComment', (req, res)=> {
+  var user = req.session.user;
+  Promise.all([
+  userComment.create({
+    body: req.body.comment
+  }),
+  User.findOne({
+    where: { 
+      id: req.session.user.id
+    }
+  }),
+  Message.findOne({
+    where: { 
+      id: req.body.messageId
+    }
+  }),
+  console.log(req.body.messageId)
+]).then(function(allofthem){
+            allofthem[0].setUser(allofthem[1])
+            allofthem[0].setMessage(allofthem[2])
+    }).then(function(){
+        response.redirect(request.body.origin)
+    })
+})
+
 
 app.get('/logout', (req, res)=> {
   console.log('User is logged out')
