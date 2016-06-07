@@ -1,20 +1,31 @@
-each message in posts
+extends layout
 
-	h2= message.title
-	p= message.body
+block content
+	.container
+		div.row.text-center.btn-block
+			div.col-sm-12.profile
+				each message in posts
+						strong
+							a(href='singlepost/' + message.id) Blogpost # 
+							= message.id
+						h2= message.title
+						p= message.body
+						strong
+							a(href='singlepost/' + message.id)
+						form(action='/addComment', method='post')
+					      
+							input(name='comment')
+							br
+							input(type='text', name='messageId' value=message.id, hidden)
+							button(type='comment', value= 'comment') Comment
+						h3 Comments:
+						each thing in message.comment
+							.singlepost
+									p= thing.body
 
-		form(action='/addComment', method='post')
-	      
-			input(name='comment')
-			br
-			input(type='text', name='messageId' value=message.id)
-			button(type='comment', value= 'comment') Comment
-		each thing in message.comment
-			p= thing.body
-
-     
+				     
 
 
-a(href="/") login
-br
-a(href="/profile") profile
+		a(href="/") login
+		br
+		a(href="/profile") profile

@@ -110,17 +110,19 @@ app.get('/profile', function(req, res){
     where:{ userId: user.id}
   }).then(function(messages){
     res.render('profile', {
-        posts: messages
+        posts: messages,
+        usertje: user,
+        sessionuser: user
 
 
-    })
+    });
 
-  })
+  });
 }
 });
 //Post message
 app.post('/profile', function ( req, res) {
-    console.log(req.session.user);
+    console.log(req.session.user); 
   User.findOne({
     where: {
       id: req.session.user.id
@@ -154,6 +156,7 @@ app.get('/allPosts', (req, res)=>{
       posts: allMessages,
       user: req.session.user,
       
+      
     })
      
     
@@ -182,7 +185,7 @@ app.post('/addComment', (req, res)=> {
             allofthem[0].setUser(allofthem[1])
             allofthem[0].setMessage(allofthem[2])
     }).then(function(){
-        response.redirect(request.body.origin)
+        res.redirect('/allPosts')
     })
 })
 
@@ -197,6 +200,33 @@ app.get('/logout', (req, res)=> {
   });
 });
 
+app.get('/singlepost/:id', (req,res)=>{
+  var requestParameters = req.params;
+  var user = req.session.user;
+  if (user === undefined){
+    res.redirect('/');
+  } else {Message.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+    {model: userComment, include:[
+      {model: User}
+      ]}
+      ]
+    }).then(function(post){
+      console.log(post)
+      res.render('onePost',{
+        title: "Single post",
+        post: post
+      })
+    });
+  };
+});
+
+app.get('/layout', (req, res)=> {
+  res.render('layout')
+});
 sequelize.sync({force: false}).then(function () {
 	var server = app.listen(3000, function () {
 		console.log('Example app listening on port: ' + server.address().port);

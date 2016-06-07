@@ -1,12 +1,18 @@
-h2 Login
+extends layout
 
-p
-  form(action="/login", method="post")
-    div.input
-      span.label Email
-      input(type="text", name="loginEmail" )
-    div.input
-      span.label Password
-      input(type="password", name="loginPassword")
-    div.actions
-      input#button(type="submit", value="Login")
+block content
+
+			h2.text-center Login
+			p=message
+				.container-profile
+					form.form-group.text-center(action="/login", method="post")
+						div.input.col-sm-12.profile
+							label(for='exampleInputEmail1') Email: 
+							br
+							input#exampleInputEmail1(type="text", name="loginEmail" )
+						div.input
+							label(for='exampleInputEmail1')  Password:  
+							br
+							input(type="password", name="loginPassword")
+						div.actions
+							input#button(type="submit", value="Login")

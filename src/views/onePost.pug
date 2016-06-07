@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	.container.text-center.onepost
+		div.row
+			div.col-sm-12.onepost
+				strong
+					h2= post.title
+				p= post.message
+				.comments
+					h3 comments:
+					each thing in post.comments
+						p= thing.user.userName
+							|  said: 
+						p= thing.body

@@ -1,21 +1,33 @@
-html
-  title Profile page
-  a(href='/logout') logout
-  br
-  a(href='/allPosts') Read all posts
-  h1 Welcome to your own page
-  h3 Start writing your own blog down here!
-  body
-    form(action='/profile', method='post')
-      label Title
-      input(type='text', name='title', value='')
-      br
-      label Message
-      input(type='text', name='message', value='')
-      br
-      label Submit button
-      input(type='submit', value='Post message', name='submit')
+extends layout
 
-  each message in posts
-    h2= message.title
-    p= message.message
+block content
+
+    .container.profile
+        div.row.text-center.btn-block
+          div.col-sm-12.profile
+                title Profile page
+                
+                h1 Welcome 
+                h3= usertje.userName
+                h3 Start writing your own blog down here!
+                body
+    .container.fluid
+        div.row.text-center.btn-block
+          div.col-sm-12.centered.profile
+                  form(action='/profile', method='post')
+                      div.text-center
+                        label Title: 
+                        input.form-control(type='text', name='title')
+                        br
+                      div
+                        label Message: 
+                        textarea.form-control(rows='3', type='text', name='message', value='')
+                        br
+                        input.btn.btn-default(type='submit', value='Post message', name='submit')
+          div.col-sm-6.profile.btn-block
+                    h1 Your posts:
+                    each message in posts
+                      .singlepost
+                          strong
+                                p= message.title
+                          p= message.message
