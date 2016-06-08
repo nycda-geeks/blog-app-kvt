@@ -11,7 +11,7 @@ var Promise = require ( 'promise' )
 app.use(bodyParser.urlencoded({extended: true}));
 
 //connect to database blog_app
-var sequelize = new Sequelize ('blogdata', 'postgres', 'kyle1993' ,{
+var sequelize = new Sequelize ('blogdata', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD ,{
   host: 'localhost',
   dialect: 'postgres',
 });
